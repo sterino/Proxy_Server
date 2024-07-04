@@ -7,7 +7,7 @@ type RequestProxy struct {
 }
 
 type ResponseProxy struct {
-	ID      int               `json:"id""`
+	ID      string
 	Status  int               `json:"status"`
 	Headers map[string]string `json:"headers"`
 	Length  int               `json:"length"`

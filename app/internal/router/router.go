@@ -1,11 +1,11 @@
 package router
 
 import (
+	"app/internal/proxy"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
-func Router() http.Handler {
+func Router() *gin.Engine {
 	router := gin.Default()
 
 	router.GET("/ping", func(c *gin.Context) {
@@ -14,5 +14,6 @@ func Router() http.Handler {
 		})
 	})
 
+	router.POST("/proxy", proxy.Proxy)
 	return router
 }
