@@ -15,5 +15,6 @@ func Router() *gin.Engine {
 	})
 
 	router.POST("/proxy", proxy.Proxy)
+	router.GET("/")
 	return router
 }
