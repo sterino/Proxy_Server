@@ -2,11 +2,9 @@ package proxy
 
 import (
 	"app/internal/model"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
+	"github.com/google/uuid"
 	"net/http"
-	"time"
 )
 
 func Proxy(c *gin.Context) {
@@ -17,34 +15,29 @@ func Proxy(c *gin.Context) {
 		return
 	}
 
-	resp, err := http.Get(request.Url)
-
+	req, err := http.NewRequest(request.Method, request.Url, nil)
 	if err != nil {
-		fmt.Println("Error:", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
+	client := &http.Client{}
+	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("Error:", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	id := time.Now().Format(time.RFC3339Nano)
-	headers := make(map[string]string)
+	header := make(map[string]string)
 	for k, v := range resp.Header {
-		headers[k] = v[0]
+		header[k] = v[0]
 	}
 
 	response := model.ResponseProxy{
-		ID:      id,
+		ID:      uuid.New().String(),
 		Status:  resp.StatusCode,
-		Headers: headers,
-		Length:  len(body),
+		Headers: header,
+		Length:  len(resp.Header),
 	}
 
 	c.JSON(http.StatusOK, response)
