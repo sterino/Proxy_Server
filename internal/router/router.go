@@ -15,6 +15,8 @@ func Router() *gin.Engine {
 	})
 
 	router.POST("/proxy", proxy.Proxy)
-	router.GET("/")
+	router.GET("/caches", proxy.GetCaches)
+	router.GET("/caches/:id", proxy.GetCacheById)
+
 	return router
 }
