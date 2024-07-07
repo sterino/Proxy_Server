@@ -1,11 +1,19 @@
 package router
 
 import (
-	"app/internal/proxy"
+	"app/internal/handler"
 	"github.com/gin-gonic/gin"
 )
 
-func Router() *gin.Engine {
+type Router struct {
+	proxy *handler.Handler
+}
+
+func NewRouter(proxy *handler.Handler) *Router {
+	return &Router{proxy: proxy}
+}
+
+func (r *Router) InitRouters() *gin.Engine {
 	router := gin.Default()
 
 	router.GET("/ping", func(c *gin.Context) {
@@ -14,9 +22,9 @@ func Router() *gin.Engine {
 		})
 	})
 
-	router.POST("/proxy", proxy.Proxy)
-	router.GET("/caches", proxy.GetCaches)
-	router.GET("/caches/:id", proxy.GetCacheById)
+	router.POST("/proxy", r.proxy.Proxy)
+	router.GET("/caches", r.proxy.GetCaches)
+	router.GET("/caches/:id", r.proxy.GetCacheById)
 
 	return router
 }

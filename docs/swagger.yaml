@@ -1,0 +1,9 @@
+basePath: /
+host: localhost:8081
+info:
+  contact: {}
+  description: API Server for Proxy Server App
+  title: Proxy Server
+  version: "1.0"
+paths: {}
+swagger: "2.0"

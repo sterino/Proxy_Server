@@ -1,7 +1,9 @@
+// cache/cache.go
 package cache
 
 import (
-	"app/internal/model"
+	"app/internal/domain/proxy"
+	"net/http"
 	"sync"
 )
 
@@ -13,20 +15,35 @@ func NewCache() *Cache {
 	return &Cache{}
 }
 
-func (c *Cache) Set(id string, resp model.ResponseProxy, req model.RequestProxy) {
+func (c *Cache) Set(id string, req proxy.RequestProxy, statusCode int, head http.Header) proxy.ResponseProxy {
+
+	header := make(map[string]string)
+	for k, v := range head {
+		header[k] = v[0]
+	}
+
+	resp := proxy.ResponseProxy{
+		ID:      id,
+		Status:  statusCode,
+		Headers: header,
+		Length:  len(head),
+	}
+
 	c.store.Store(id+"_resp", resp)
 	c.store.Store(id+"_req", req)
+
+	return resp
 }
 
-func (c *Cache) SetError(id string, req interface{}, statusCode int, err string) interface{} {
+func (c *Cache) SetError(id string, req interface{}, statusCode int, err string) proxy.Error {
 	errMap := make(map[string]string)
 	errMap["error"] = err
 
-	resp := model.ResponseProxy{
+	resp := proxy.Error{
 		ID:      id,
 		Status:  statusCode,
 		Headers: errMap,
-		Length:  len(err),
+		Message: err,
 	}
 	c.store.Store(id+"_resp", resp)
 	c.store.Store(id+"_req", req)
@@ -41,12 +58,12 @@ func (c *Cache) Get(id string) (interface{}, interface{}, bool) {
 	return res, req, found
 }
 
-func (c *Cache) GetAll() map[string]interface{} {
+func (c *Cache) GetAll() (map[string]interface{}, bool) {
 	allCache := make(map[string]interface{})
 	c.store.Range(func(k, v interface{}) bool {
 		allCache[k.(string)] = v
 		return true
 	})
 
-	return allCache
+	return allCache, len(allCache) > 0
 }
