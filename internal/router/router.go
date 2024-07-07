@@ -3,6 +3,10 @@ package router
 import (
 	"app/internal/handler"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "app/docs"
 )
 
 type Router struct {
@@ -25,6 +29,8 @@ func (r *Router) InitRouters() *gin.Engine {
 	router.POST("/proxy", r.proxy.Proxy)
 	router.GET("/caches", r.proxy.GetCaches)
 	router.GET("/caches/:id", r.proxy.GetCacheById)
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return router
 }

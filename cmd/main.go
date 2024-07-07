@@ -12,9 +12,8 @@ import (
 // @version 1.0
 // @description API Server for Proxy Server App
 
-// @host localhost:8081
+// @host localhost:8080
 // @BasePath /
-
 func main() {
 
 	cacheInstance := cache.NewCache()

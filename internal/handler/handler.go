@@ -17,16 +17,15 @@ func NewHandler(cacheInstance *cache.Cache) *Handler {
 	return &Handler{cacheInstance: cacheInstance}
 }
 
-// @Summary request url
-// @Tags proxy
+// @Summary 	request url
+// @Tags 	    proxy
 // @Description create request
-// @Accept json
-// @Produce json
-// @Param input body  proxy.RequestProxy true "request data"
-// @Failure 400 {object} string
-// @Failure 502 {object} string
-// @Router /proxy [post]
-
+// @Accept 		json
+// @Produce 	json
+// @Param 		input body  proxy.RequestProxy true "request data"
+// @Failure 	400 {object} string
+// @Failure 	502 {object} string
+// @Router 		/proxy [post]
 func (p *Handler) Proxy(c *gin.Context) {
 	var request proxy.RequestProxy
 
@@ -57,13 +56,13 @@ func (p *Handler) Proxy(c *gin.Context) {
 }
 
 // @Summary get all requests and responses
-// @Tags proxy
-// @Description get all history
-// @Accept json
-// @Produce json
-// @Failure 400 {object} string
-// @Router /caches [get]
-
+//
+//		@Tags proxy
+//		@Description get all history
+//		@Accept json
+//		@Produce json
+//		@Failure 400 {object} string
+//	 @Router /caches [get]
 func (p *Handler) GetCaches(c *gin.Context) {
 	caches, found := p.cacheInstance.GetAll()
 	if !found {
@@ -82,7 +81,6 @@ func (p *Handler) GetCaches(c *gin.Context) {
 // @Param id path string true "request id"
 // @Failure 400 {object} string
 // @Router /caches/{id} [get]
-
 func (p *Handler) GetCacheById(c *gin.Context) {
 	id := c.Param("id")
 	resp, req, found := p.cacheInstance.Get(id)
