@@ -8,8 +8,8 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o app/proxy-server ./cmd/main.go
+RUN go build -o /proxy-server ./cmd/main.go
 
 Expose 8080
 
-CMD ["app/proxy-server"]
+CMD ["/proxy-server"]
