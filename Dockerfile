@@ -12,4 +12,4 @@ RUN go build -o /proxy-server ./cmd/main.go
 
 Expose 8080
 
-CMD ["go", "run", "/proxy-server", "."]
+CMD ["./proxy-server"]
