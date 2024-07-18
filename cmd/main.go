@@ -4,7 +4,6 @@ import (
 	"app/internal/handler"
 	"app/internal/router"
 	"app/internal/store"
-	"fmt"
 	"net/http"
 )
 
@@ -18,11 +17,8 @@ func main() {
 
 	stores := store.NewStore()
 	handlers := handler.NewHandler(stores)
-	routers := router.NewRouter(handlers)
 
-	r := routers.InitRouters()
+	r := router.InitRouters(handlers)
 
-	if err := http.ListenAndServe(":8080", r); err != nil {
-		fmt.Println("Error starting server:", err)
-	}
+	http.ListenAndServe(":8080", r)
 }

@@ -9,20 +9,12 @@ import (
 	_ "app/docs"
 )
 
-type Router struct {
-	proxy *handler.Proxy
-}
-
-func NewRouter(proxy *handler.Proxy) *Router {
-	return &Router{proxy: proxy}
-}
-
-func (r *Router) InitRouters() *gin.Engine {
+func InitRouters(proxy *handler.Proxy) *gin.Engine {
 	router := gin.Default()
 
-	router.POST("/proxy", r.proxy.HandleProxy)
-	router.GET("/proxy", r.proxy.GetCaches)
-	router.GET("/proxy/:id", r.proxy.GetCacheById)
+	router.POST("/proxy", proxy.HandleProxy)
+	router.GET("/proxy", proxy.GetCaches)
+	router.GET("/proxy/:id", proxy.GetCacheById)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
