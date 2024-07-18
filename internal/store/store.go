@@ -11,7 +11,7 @@ type Store struct {
 	sync.Map
 }
 
-func NewCache() *Store {
+func NewStore() *Store {
 	return &Store{}
 }
 

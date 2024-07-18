@@ -16,11 +16,11 @@ import (
 // @BasePath /
 func main() {
 
-	cacheInstance := store.NewCache()
-	handlerInstance := handler.NewHandler(cacheInstance)
-	routerInstance := router.NewRouter(handlerInstance)
+	stores := store.NewStore()
+	handlers := handler.NewHandler(stores)
+	routers := router.NewRouter(handlers)
 
-	r := routerInstance.InitRouters()
+	r := routers.InitRouters()
 
 	if err := http.ListenAndServe(":8080", r); err != nil {
 		fmt.Println("Error starting server:", err)

@@ -13,8 +13,8 @@ type Proxy struct {
 	store *store.Store
 }
 
-func NewHandler(cacheInstance *store.Store) *Proxy {
-	return &Proxy{store: cacheInstance}
+func NewHandler(store *store.Store) *Proxy {
+	return &Proxy{store: store}
 }
 
 // @Summary 	request url
