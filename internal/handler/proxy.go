@@ -63,7 +63,7 @@ func (p *Proxy) HandleProxy(c *gin.Context) {
 //		@Produce json
 //		@Failure 400 {object} string
 //	 @Router /proxy [get]
-func (p *Proxy) GetCaches(c *gin.Context) {
+func (p *Proxy) GetStore(c *gin.Context) {
 	caches, found := p.store.GetAll()
 	if !found {
 		e := p.store.SetError(uuid.New().String(), nil, http.StatusNotFound, "Cache not found")
@@ -81,7 +81,7 @@ func (p *Proxy) GetCaches(c *gin.Context) {
 // @Param id path string true "request id"
 // @Failure 400 {object} string
 // @Router /proxy/{id} [get]
-func (p *Proxy) GetCacheById(c *gin.Context) {
+func (p *Proxy) GetStoreById(c *gin.Context) {
 	id := c.Param("id")
 	resp, req, found := p.store.Get(id)
 	if !found {

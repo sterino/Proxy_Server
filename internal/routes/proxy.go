@@ -1,4 +1,4 @@
-package router
+package routes
 
 import (
 	"app/internal/handler"
@@ -13,8 +13,8 @@ func InitRouters(proxy *handler.Proxy) *gin.Engine {
 	router := gin.Default()
 
 	router.POST("/proxy", proxy.HandleProxy)
-	router.GET("/proxy", proxy.GetCaches)
-	router.GET("/proxy/:id", proxy.GetCacheById)
+	router.GET("/proxy", proxy.GetStore)
+	router.GET("/proxy/:id", proxy.GetStoreById)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
