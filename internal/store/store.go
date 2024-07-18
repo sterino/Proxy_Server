@@ -1,0 +1,68 @@
+// store/store.go
+package store
+
+import (
+	"app/internal/domain/proxy"
+	"net/http"
+	"sync"
+)
+
+type Store struct {
+	sync.Map
+}
+
+func NewCache() *Store {
+	return &Store{}
+}
+
+func (s *Store) Set(id string, req proxy.RequestProxy, statusCode int, head http.Header) proxy.ResponseProxy {
+
+	header := make(map[string]string)
+	for k, v := range head {
+		header[k] = v[0]
+	}
+
+	resp := proxy.ResponseProxy{
+		ID:      id,
+		Status:  statusCode,
+		Headers: header,
+		Length:  len(head),
+	}
+	s.Store(id+"_resp", resp)
+	s.Store(id+"_req", req)
+
+	return resp
+}
+
+func (s *Store) SetError(id string, req interface{}, statusCode int, err string) proxy.Error {
+	errMap := make(map[string]string)
+	errMap["error"] = err
+
+	resp := proxy.Error{
+		ID:      id,
+		Status:  statusCode,
+		Headers: errMap,
+		Message: err,
+	}
+	s.Store(id+"_resp", resp)
+	s.Store(id+"_req", req)
+
+	return resp
+}
+
+func (s *Store) Get(id string) (interface{}, interface{}, bool) {
+	res, found := s.Load(id + "_resp")
+	req, _ := s.Load(id + "_req")
+
+	return res, req, found
+}
+
+func (s *Store) GetAll() (map[string]interface{}, bool) {
+	allCache := make(map[string]interface{})
+	s.Range(func(k, v interface{}) bool {
+		allCache[k.(string)] = v
+		return true
+	})
+
+	return allCache, len(allCache) > 0
+}

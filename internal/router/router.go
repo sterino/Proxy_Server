@@ -10,25 +10,19 @@ import (
 )
 
 type Router struct {
-	proxy *handler.Handler
+	proxy *handler.Proxy
 }
 
-func NewRouter(proxy *handler.Handler) *Router {
+func NewRouter(proxy *handler.Proxy) *Router {
 	return &Router{proxy: proxy}
 }
 
 func (r *Router) InitRouters() *gin.Engine {
 	router := gin.Default()
 
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
-	router.POST("/proxy", r.proxy.Proxy)
-	router.GET("/caches", r.proxy.GetCaches)
-	router.GET("/caches/:id", r.proxy.GetCacheById)
+	router.POST("/proxy", r.proxy.HandleProxy)
+	router.GET("/proxy", r.proxy.GetCaches)
+	router.GET("/proxy/:id", r.proxy.GetCacheById)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

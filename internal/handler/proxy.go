@@ -1,20 +1,20 @@
-// handler/handler.go
+// handler/proxy.go
 package handler
 
 import (
-	"app/internal/cache"
 	"app/internal/domain/proxy"
+	"app/internal/store"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
 )
 
-type Handler struct {
-	cacheInstance *cache.Cache
+type Proxy struct {
+	store *store.Store
 }
 
-func NewHandler(cacheInstance *cache.Cache) *Handler {
-	return &Handler{cacheInstance: cacheInstance}
+func NewHandler(cacheInstance *store.Store) *Proxy {
+	return &Proxy{store: cacheInstance}
 }
 
 // @Summary 	request url
@@ -26,18 +26,18 @@ func NewHandler(cacheInstance *cache.Cache) *Handler {
 // @Failure 	400 {object} string
 // @Failure 	502 {object} string
 // @Router 		/proxy [post]
-func (p *Handler) Proxy(c *gin.Context) {
+func (p *Proxy) HandleProxy(c *gin.Context) {
 	var request proxy.RequestProxy
 
 	if err := c.BindJSON(&request); err != nil {
-		e := p.cacheInstance.SetError(uuid.New().String(), request, http.StatusBadRequest, err.Error())
+		e := p.store.SetError(uuid.New().String(), request, http.StatusBadRequest, err.Error())
 		c.JSON(http.StatusOK, e)
 		return
 	}
 
 	req, err := http.NewRequest(request.Method, request.URL, nil)
 	if err != nil {
-		e := p.cacheInstance.SetError(uuid.New().String(), request, http.StatusBadRequest, err.Error())
+		e := p.store.SetError(uuid.New().String(), request, http.StatusBadRequest, err.Error())
 		c.JSON(http.StatusOK, e)
 		return
 	}
@@ -45,12 +45,12 @@ func (p *Handler) Proxy(c *gin.Context) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		e := p.cacheInstance.SetError(uuid.New().String(), request, http.StatusBadRequest, err.Error())
+		e := p.store.SetError(uuid.New().String(), request, http.StatusBadRequest, err.Error())
 		c.JSON(http.StatusOK, e)
 		return
 	}
 
-	response := p.cacheInstance.Set(uuid.New().String(), request, http.StatusOK, resp.Header)
+	response := p.store.Set(uuid.New().String(), request, http.StatusOK, resp.Header)
 
 	c.JSON(http.StatusOK, response)
 }
@@ -63,10 +63,10 @@ func (p *Handler) Proxy(c *gin.Context) {
 //		@Produce json
 //		@Failure 400 {object} string
 //	 @Router /caches [get]
-func (p *Handler) GetCaches(c *gin.Context) {
-	caches, found := p.cacheInstance.GetAll()
+func (p *Proxy) GetCaches(c *gin.Context) {
+	caches, found := p.store.GetAll()
 	if !found {
-		e := p.cacheInstance.SetError(uuid.New().String(), nil, http.StatusNotFound, "Cache not found")
+		e := p.store.SetError(uuid.New().String(), nil, http.StatusNotFound, "Cache not found")
 		c.JSON(http.StatusOK, e)
 		return
 	}
@@ -81,11 +81,11 @@ func (p *Handler) GetCaches(c *gin.Context) {
 // @Param id path string true "request id"
 // @Failure 400 {object} string
 // @Router /caches/{id} [get]
-func (p *Handler) GetCacheById(c *gin.Context) {
+func (p *Proxy) GetCacheById(c *gin.Context) {
 	id := c.Param("id")
-	resp, req, found := p.cacheInstance.Get(id)
+	resp, req, found := p.store.Get(id)
 	if !found {
-		e := p.cacheInstance.SetError(uuid.New().String(), nil, http.StatusNotFound, "Cache not found")
+		e := p.store.SetError(uuid.New().String(), nil, http.StatusNotFound, "Cache not found")
 		c.JSON(http.StatusOK, e)
 		return
 	}

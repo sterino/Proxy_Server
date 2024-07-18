@@ -1,9 +1,9 @@
 package main
 
 import (
-	"app/internal/cache"
 	"app/internal/handler"
 	"app/internal/router"
+	"app/internal/store"
 	"fmt"
 	"net/http"
 )
@@ -16,7 +16,7 @@ import (
 // @BasePath /
 func main() {
 
-	cacheInstance := cache.NewCache()
+	cacheInstance := store.NewCache()
 	handlerInstance := handler.NewHandler(cacheInstance)
 	routerInstance := router.NewRouter(handlerInstance)
 
