@@ -24,7 +24,6 @@ definitions:
       status:
         type: integer
     type: object
-host: localhost:8080
 info:
   contact: {}
   description: API Server for Proxy Server App

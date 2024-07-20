@@ -67,13 +67,13 @@ func (p *Proxy) HandleProxy(c *gin.Context) {
 // @Failure 502 {object} string "Internal server error"
 // @Router /proxy [get]
 func (p *Proxy) GetStore(c *gin.Context) {
-	caches, found := p.store.GetAll()
+	resp, found := p.store.GetAll()
 	if !found {
 		e := p.store.SetError(uuid.New().String(), nil, http.StatusNotFound, "Cache not found")
 		c.JSON(http.StatusOK, e)
 		return
 	}
-	c.JSON(http.StatusOK, caches)
+	c.JSON(http.StatusOK, resp)
 }
 
 // GetStoreById godoc

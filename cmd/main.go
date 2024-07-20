@@ -11,7 +11,6 @@ import (
 // @version 1.0
 // @description API Server for Proxy Server App
 
-// @host localhost:8080
 // @BasePath /
 func main() {
 
