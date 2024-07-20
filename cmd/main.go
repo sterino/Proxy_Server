@@ -2,7 +2,7 @@ package main
 
 import (
 	"app/internal/handler"
-	"app/internal/router"
+	"app/internal/routes"
 	"app/internal/store"
 	"net/http"
 )
@@ -18,7 +18,7 @@ func main() {
 	stores := store.NewStore()
 	handlers := handler.NewHandler(stores)
 
-	r := router.InitRouters(handlers)
+	r := routes.InitRouters(handlers)
 
 	http.ListenAndServe(":8080", r)
 }

@@ -29,8 +29,8 @@ const docTemplate = `{
                 ],
                 "summary": "get all requests and responses",
                 "responses": {
-                    "400": {
-                        "description": "Bad Request",
+                    "502": {
+                        "description": "Internal server error",
                         "schema": {
                             "type": "string"
                         }
@@ -62,13 +62,13 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid request body",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "502": {
-                        "description": "Bad Gateway",
+                        "description": "Internal server error",
                         "schema": {
                             "type": "string"
                         }
@@ -100,7 +100,13 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "502": {
+                        "description": "Internal server error",
                         "schema": {
                             "type": "string"
                         }

@@ -26,8 +26,8 @@ paths:
       produces:
       - application/json
       responses:
-        "400":
-          description: Bad Request
+        "502":
+          description: Internal server error
           schema:
             type: string
       summary: get all requests and responses
@@ -48,11 +48,11 @@ paths:
       - application/json
       responses:
         "400":
-          description: Bad Request
+          description: Invalid request body
           schema:
             type: string
         "502":
-          description: Bad Gateway
+          description: Internal server error
           schema:
             type: string
       summary: request url
@@ -73,7 +73,11 @@ paths:
       - application/json
       responses:
         "400":
-          description: Bad Request
+          description: Invalid request body
+          schema:
+            type: string
+        "502":
+          description: Internal server error
           schema:
             type: string
       summary: get all requests and responses

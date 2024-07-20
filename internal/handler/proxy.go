@@ -17,15 +17,16 @@ func NewHandler(store *store.Store) *Proxy {
 	return &Proxy{store: store}
 }
 
-// @Summary 	request url
-// @Tags 	    proxy
+// HandlleProxy godoc
+// @Summary request url
+// @Tags proxy
 // @Description create request
-// @Accept 		json
-// @Produce 	json
-// @Param 		input body  proxy.RequestProxy true "request data"
-// @Failure 	400 {object} string
-// @Failure 	502 {object} string
-// @Router 		/proxy [post]
+// @Accept 	json
+// @Produce json
+// @Param input body proxy.RequestProxy true "request data"
+// @Failure 400 {object} string "Invalid request body"
+// @Failure 502 {object} string "Internal server error"
+// @Router /proxy [post]
 func (p *Proxy) HandleProxy(c *gin.Context) {
 	var request proxy.RequestProxy
 
@@ -55,14 +56,14 @@ func (p *Proxy) HandleProxy(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// GetStore godoc
 // @Summary get all requests and responses
-//
-//		@Tags proxy
-//		@Description get all history
-//		@Accept json
-//		@Produce json
-//		@Failure 400 {object} string
-//	 @Router /proxy [get]
+// @Tags proxy
+// @Description get all history
+// @Accept json
+// @Produce json
+// @Failure 502 {object} string "Internal server error"
+// @Router /proxy [get]
 func (p *Proxy) GetStore(c *gin.Context) {
 	caches, found := p.store.GetAll()
 	if !found {
@@ -73,13 +74,15 @@ func (p *Proxy) GetStore(c *gin.Context) {
 	c.JSON(http.StatusOK, caches)
 }
 
+// GetStoreById godoc
 // @Summary get all requests and responses
 // @Tags proxy
 // @Description get all history
 // @Accept json
 // @Produce json
 // @Param id path string true "request id"
-// @Failure 400 {object} string
+// @Failure 400 {object} string "Invalid request body"
+// @Failure 502 {object} string "Internal server error"
 // @Router /proxy/{id} [get]
 func (p *Proxy) GetStoreById(c *gin.Context) {
 	id := c.Param("id")
