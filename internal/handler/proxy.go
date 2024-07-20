@@ -63,7 +63,6 @@ func (p *Proxy) HandleProxy(c *gin.Context) {
 // @Description get all history
 // @Accept json
 // @Produce json
-// @Success 200 {object} models.ResponseProxy
 // @Failure 502 {object} string "Internal server error"
 // @Router /proxy [get]
 func (p *Proxy) GetStore(c *gin.Context) {
@@ -83,7 +82,6 @@ func (p *Proxy) GetStore(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "request id"
-// @Success 200 {object} models.ResponseProxy
 // @Failure 400 {object} string "Invalid request body"
 // @Failure 502 {object} string "Internal server error"
 // @Router /proxy/{id} [get]
