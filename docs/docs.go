@@ -29,12 +29,6 @@ const docTemplate = `{
                 ],
                 "summary": "get all requests and responses",
                 "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.ResponseProxy"
-                        }
-                    },
                     "502": {
                         "description": "Internal server error",
                         "schema": {
@@ -111,12 +105,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.ResponseProxy"
-                        }
-                    },
                     "400": {
                         "description": "Invalid request body",
                         "schema": {

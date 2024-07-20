@@ -37,10 +37,6 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.ResponseProxy'
         "502":
           description: Internal server error
           schema:
@@ -91,10 +87,6 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.ResponseProxy'
         "400":
           description: Invalid request body
           schema:
