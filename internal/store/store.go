@@ -2,7 +2,7 @@
 package store
 
 import (
-	"app/internal/domain/proxy"
+	models "app/internal/domain/proxy"
 	"net/http"
 	"sync"
 )
@@ -15,14 +15,14 @@ func NewStore() *Store {
 	return &Store{}
 }
 
-func (s *Store) Set(id string, req proxy.RequestProxy, statusCode int, head http.Header) proxy.ResponseProxy {
+func (s *Store) Set(id string, req models.RequestProxy, statusCode int, head http.Header) models.ResponseProxy {
 
 	header := make(map[string]string)
 	for k, v := range head {
 		header[k] = v[0]
 	}
 
-	resp := proxy.ResponseProxy{
+	resp := models.ResponseProxy{
 		ID:      id,
 		Status:  statusCode,
 		Headers: header,
@@ -34,11 +34,11 @@ func (s *Store) Set(id string, req proxy.RequestProxy, statusCode int, head http
 	return resp
 }
 
-func (s *Store) SetError(id string, req interface{}, statusCode int, err string) proxy.Error {
+func (s *Store) SetError(id string, req interface{}, statusCode int, err string) models.Error {
 	errMap := make(map[string]string)
 	errMap["error"] = err
 
-	resp := proxy.Error{
+	resp := models.Error{
 		ID:      id,
 		Status:  statusCode,
 		Headers: errMap,

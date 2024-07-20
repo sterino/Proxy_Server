@@ -1,4 +1,4 @@
-package proxy
+package models
 
 type RequestProxy struct {
 	Method  string            `json:"method"`
