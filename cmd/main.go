@@ -10,8 +10,6 @@ import (
 // @title Proxy Server
 // @version 1.0
 // @description API Server for Proxy Server App
-
-// @BasePath /
 func main() {
 
 	stores := store.NewStore()
