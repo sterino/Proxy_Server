@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  proxy.RequestProxy:
+  models.RequestProxy:
     properties:
       headers:
         additionalProperties:
@@ -10,6 +10,19 @@ definitions:
         type: string
       url:
         type: string
+    type: object
+  models.ResponseProxy:
+    properties:
+      headers:
+        additionalProperties:
+          type: string
+        type: object
+      id:
+        type: string
+      length:
+        type: integer
+      status:
+        type: integer
     type: object
 host: localhost:8080
 info:
@@ -26,6 +39,10 @@ paths:
       produces:
       - application/json
       responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseProxy'
         "502":
           description: Internal server error
           schema:
@@ -43,10 +60,14 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/proxy.RequestProxy'
+          $ref: '#/definitions/models.RequestProxy'
       produces:
       - application/json
       responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseProxy'
         "400":
           description: Invalid request body
           schema:
@@ -72,6 +93,10 @@ paths:
       produces:
       - application/json
       responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResponseProxy'
         "400":
           description: Invalid request body
           schema:

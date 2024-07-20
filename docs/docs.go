@@ -29,6 +29,12 @@ const docTemplate = `{
                 ],
                 "summary": "get all requests and responses",
                 "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseProxy"
+                        }
+                    },
                     "502": {
                         "description": "Internal server error",
                         "schema": {
@@ -56,11 +62,17 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/proxy.RequestProxy"
+                            "$ref": "#/definitions/models.RequestProxy"
                         }
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseProxy"
+                        }
+                    },
                     "400": {
                         "description": "Invalid request body",
                         "schema": {
@@ -99,6 +111,12 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseProxy"
+                        }
+                    },
                     "400": {
                         "description": "Invalid request body",
                         "schema": {
@@ -116,7 +134,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "proxy.RequestProxy": {
+        "models.RequestProxy": {
             "type": "object",
             "properties": {
                 "headers": {
@@ -130,6 +148,26 @@ const docTemplate = `{
                 },
                 "url": {
                     "type": "string"
+                }
+            }
+        },
+        "models.ResponseProxy": {
+            "type": "object",
+            "properties": {
+                "headers": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "length": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
                 }
             }
         }
