@@ -68,7 +68,7 @@ func (p *Proxy) HandleProxy(c *gin.Context) {
 func (p *Proxy) GetStore(c *gin.Context) {
 	resp, found := p.store.GetAll()
 	if !found {
-		e := p.store.SetError(uuid.New().String(), nil, http.StatusNotFound, "Cache not found")
+		e := p.store.SetError(uuid.New().String(), nil, http.StatusNotFound, "Data not found")
 		c.JSON(http.StatusOK, e)
 		return
 	}
@@ -89,7 +89,7 @@ func (p *Proxy) GetStoreById(c *gin.Context) {
 	id := c.Param("id")
 	resp, req, found := p.store.Get(id)
 	if !found {
-		e := p.store.SetError(uuid.New().String(), nil, http.StatusNotFound, "Cache not found")
+		e := p.store.SetError(uuid.New().String(), nil, http.StatusNotFound, "Data not found")
 		c.JSON(http.StatusOK, e)
 		return
 	}

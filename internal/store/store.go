@@ -58,11 +58,11 @@ func (s *Store) Get(id string) (interface{}, interface{}, bool) {
 }
 
 func (s *Store) GetAll() (map[string]interface{}, bool) {
-	allCache := make(map[string]interface{})
+	resp := make(map[string]interface{})
 	s.Range(func(k, v interface{}) bool {
-		allCache[k.(string)] = v
+		resp[k.(string)] = v
 		return true
 	})
 
-	return allCache, len(allCache) > 0
+	return resp, len(resp) > 0
 }
